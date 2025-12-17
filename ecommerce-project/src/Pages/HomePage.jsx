@@ -6,12 +6,7 @@ export function HomePage(){
     return( <> 
     <div className="header">
       <div className="left-section">
-        <a href="index.html" className="header-link">
-          <img className="logo"
-            src="images/logo-white.png" />
-          <img className="mobile-logo"
-            src="images/mobile-logo-white.png" />
-        </a>
+        <h2>Ecommerce</h2>
       </div>
 
       <div className="middle-section">
