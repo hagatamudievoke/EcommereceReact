@@ -27,8 +27,9 @@
 }
 
 .checkout-header .logo {
-  height: 26px;
-  margin-top: 0px;
+  height: 40px;
+  width: 130px;
+  margin-top: 1px;
 }
 
 .checkout-header .mobile-logo {
