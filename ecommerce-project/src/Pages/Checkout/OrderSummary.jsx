@@ -1,7 +1,8 @@
 import dayjs from "dayjs";
+import axios from "axios";
 import { formatMoney } from "../../utils/money";
 import { DeliverySummary } from "./DeliverySummary";
-export function OrderSummary({ cart, delivery, cartData}) {
+export function OrderSummary({ cart, delivery, cartData }) {
   return (
     <div className="order-summary">
       {delivery.length > 0 &&
@@ -9,6 +10,16 @@ export function OrderSummary({ cart, delivery, cartData}) {
           const deliveryOption = delivery.find((delivery) => {
             return delivery.id === cartItem.deliveryOptionId;
           });
+          const deleteCart = async () => {
+            await axios.delete(`/api/cart-items/${cartItem.productId}`);
+            await cartData();
+          };
+          const updateCartData = async () => {
+            await axios.put(`/api/cart-items/${cartItem.productId}`, {
+              quantity: cartItem.quantity + 1,
+            });
+            await cartData();
+          };
           return (
             <div key={cartItem.productId} className="cart-item-container">
               <div className="delivery-date">
@@ -33,16 +44,25 @@ export function OrderSummary({ cart, delivery, cartData}) {
                         {cartItem.quantity}
                       </span>
                     </span>
-                    <span className="update-quantity-link link-primary">
+                    <span
+                      className="update-quantity-link link-primary"
+                      onClick={updateCartData}
+                    >
                       Update
                     </span>
-                    <span className="delete-quantity-link link-primary">
+                    <span
+                      className="delete-quantity-link link-primary"
+                      onClick={deleteCart}
+                    >
                       Delete
                     </span>
                   </div>
                 </div>
-                <DeliverySummary cartItem={cartItem} delivery={delivery} cartData={cartData}/>
-
+                <DeliverySummary
+                  cartItem={cartItem}
+                  delivery={delivery}
+                  cartData={cartData}
+                />
               </div>
             </div>
           );
