@@ -8,19 +8,19 @@ import { Link } from "react-router";
 import { PaymentSummary } from "./PaymentSummary";
 import { OrderSummary } from "./OrderSummary";
 
-export function CheckOutPage({ cart }) {
+export function CheckOutPage({ cart,cartData }) {
   const [delivery, setDelivery] = useState([]);
   const [paymentSummary, setPaymentSummary] = useState(null);
   useEffect(() => {
-    axios
+    const fetchCheckoutData = async () => {
+    let response = await axios
       .get("/api/delivery-options?expand=estimatedDeliveryTime")
-      .then((response) => {
-        setDelivery(response.data);
-      });
-    axios.get("/api/payment-summary").then((response) => {
+      setDelivery(response.data);
+    response = await axios.get("/api/payment-summary")
       setPaymentSummary(response.data);
-    });
-  }, []);
+    }
+    fetchCheckoutData(); 
+  }, [cart]);
 
   return (
     <>
@@ -55,7 +55,7 @@ export function CheckOutPage({ cart }) {
         <div className="page-title">Review your order</div>
 
         <div className="checkout-grid">
-          <OrderSummary cart={cart} delivery={delivery} />
+          <OrderSummary cart={cart} delivery={delivery} cartData={cartData}/>
           <PaymentSummary paymentSummary={paymentSummary} />
         </div>
       </div>
